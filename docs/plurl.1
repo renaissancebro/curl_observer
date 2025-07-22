@@ -1,0 +1,160 @@
+.TH PLURL 1 "January 2025" "plurl 1.0.0" "User Commands"
+.SH NAME
+plurl \- Playwright + curl-style HTTP testing tool
+.SH SYNOPSIS
+.B plurl
+[\fIOPTIONS\fR]
+.B \-\-url
+.I URL
+.SH DESCRIPTION
+.B plurl
+is a powerful command-line tool that combines browser automation with API testing capabilities. It uses Playwright for browser automation and provides curl-style HTTP testing functionality, allowing you to navigate web pages, interact with elements, and test multiple API endpoints concurrently.
+
+The tool is designed for developers, QA engineers, and DevOps professionals who need to perform comprehensive web and API testing from the command line or in CI/CD pipelines.
+.SH OPTIONS
+.TP
+.BR \-\-url \ \fIURL\fR
+URL to launch in Playwright (required). Must be a valid HTTP or HTTPS URL.
+.TP
+.BR \-\-test\-endpoints \ \fIENDPOINTS\fR
+Comma-separated list of API endpoints to test. Endpoints can be absolute URLs or relative paths that will be combined with the base URL.
+.TP
+.BR \-\-click\-selector \ \fISELECTOR\fR
+CSS selector to click after page load. Used for interacting with page elements.
+.TP
+.BR \-\-wait\-selector \ \fISELECTOR\fR
+CSS selector to wait for before continuing. Useful for waiting for dynamic content to load.
+.TP
+.BR \-\-method \ \fIMETHOD\fR
+HTTP method for API testing. Supported methods include GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS. Default is GET.
+.TP
+.BR \-\-timeout \ \fISECONDS\fR
+Request timeout in seconds. Default is 30 seconds.
+.TP
+.BR \-\-retry \ \fICOUNT\fR
+Number of retry attempts for API requests. Default is 0 (no retries).
+.TP
+.BR \-\-headless
+Run browser in headless mode (default). Browser window will not be visible.
+.TP
+.BR \-\-headed
+Run browser in headed mode (visible). Browser window will be displayed.
+.TP
+.BR \-\-keep\-open
+Keep browser open after completion. Requires --headed mode. Useful for manual inspection and debugging.
+.TP
+.BR \-\-screenshot \ \fIPATH\fR
+Take screenshot and save to specified path. Supports PNG, JPEG, and other image formats.
+.TP
+.BR \-\-record
+Record screen session (experimental feature). Creates a WebM video file of the browser session.
+.TP
+.BR \-\-verbose , \ \-v
+Enable verbose output. Provides detailed information about operations and progress.
+.TP
+.BR \-\-log\-file \ \fIPATH\fR
+Path to write structured log file. If not specified, an auto-generated filename will be used in the logs/ directory.
+.TP
+.BR \-\-help , \ \-h
+Show help message and exit.
+.SH EXAMPLES
+.TP
+.B Basic web testing:
+plurl --url https://example.com
+.TP
+.B API endpoint testing:
+plurl --url https://api.github.com --test-endpoints /users/octocat,/repos/microsoft/playwright
+.TP
+.B Interactive browser session:
+plurl --url https://example.com --headed --click-selector "button.login" --wait-selector ".dashboard"
+.TP
+.B Screenshot capture:
+plurl --url https://example.com --screenshot /tmp/screenshot.png
+.TP
+.B API testing with retries:
+plurl --url https://api.example.com --test-endpoints /api/status --method GET --retry 3 --timeout 10
+.TP
+.B Development and debugging:
+plurl --url https://example.com --headed --keep-open --verbose
+.TP
+.B CI/CD integration:
+plurl --url $API_URL --test-endpoints /health,/status --headless --timeout 5
+.SH OUTPUT
+.B plurl
+provides comprehensive output in multiple formats:
+.TP
+.B Console Output
+Real-time progress updates and a final summary including URL, total time, page title, API test results, and log file location.
+.TP
+.B Structured JSON Logs
+Detailed logs in JSON format containing session information, browser events, API results, and error details. Logs are written to the specified file or an auto-generated file in the logs/ directory.
+.TP
+.B Screenshots and Videos
+When requested, visual captures of the browser session are saved to the specified paths.
+.SH ENVIRONMENT VARIABLES
+.TP
+.B PLURL_TIMEOUT
+Default timeout value in seconds.
+.TP
+.B PLURL_LOG_DIR
+Default directory for log files.
+.TP
+.B PLURL_HEADLESS
+Default headless mode setting (true/false).
+.SH FILES
+.TP
+.I ~/.plurlrc
+User configuration file (JSON format) for default settings.
+.TP
+.I .plurlrc
+Project-specific configuration file in the current directory.
+.TP
+.I logs/
+Default directory for structured log files.
+.SH EXIT STATUS
+.TP
+.B 0
+Success - all operations completed successfully.
+.TP
+.B 1
+General error - invalid arguments, network failures, or other errors.
+.TP
+.B 130
+Interrupted by user (Ctrl+C).
+.SH REQUIREMENTS
+.TP
+.B Python
+3.7 or higher
+.TP
+.B Playwright
+Browser automation library (>= 1.40.0)
+.TP
+.B httpx
+Async HTTP client library (>= 0.25.0)
+.TP
+.B System Requirements
+Internet connection for web testing, sufficient disk space for logs and screenshots.
+.SH SECURITY CONSIDERATIONS
+.B plurl
+can visit any URL and make HTTP requests. Be cautious when:
+.TP
+\(bu Testing untrusted websites or APIs
+.TP
+\(bu Running with elevated privileges
+.TP
+\(bu Using in production environments without proper access controls
+.TP
+\(bu Storing sensitive data in log files
+.SH BUGS
+Report bugs at: https://github.com/renaissancebro/curl_observer/issues
+.SH AUTHOR
+Plurl Team <plurl@example.com>
+.SH COPYRIGHT
+MIT License. See the LICENSE file for details.
+.SH SEE ALSO
+.BR curl (1),
+.BR wget (1),
+.BR chromium (1),
+.BR playwright (1)
+
+Online documentation: https://github.com/renaissancebro/curl_observer#readme

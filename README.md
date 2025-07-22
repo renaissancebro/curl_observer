@@ -208,6 +208,128 @@ Perfect for automated testing in CI pipelines:
           --headless
 ```
 
+## Plurl vs Curl: When to Use Which
+
+### 🌐 **Plurl Advantages**
+
+#### **Browser Context & JavaScript**
+Plurl renders full web applications with JavaScript, while curl only gets raw HTML:
+
+```bash
+# Plurl: Tests complete SPA with dynamic content
+plurl --url https://react-app.com --test-endpoints /api/data --headed
+
+# Curl: Misses JavaScript-rendered content
+curl https://react-app.com  # ❌ Incomplete for SPAs
+```
+
+#### **Visual Verification & Screenshots**
+```bash
+# Plurl: Visual confirmation of what users see
+plurl --url https://app.com --screenshot result.png --keep-open
+
+# Curl: No visual feedback available
+curl https://app.com  # ❌ Text-only output
+```
+
+#### **Interactive User Workflows**
+```bash
+# Plurl: Handle complex user interactions
+plurl --url https://app.com --click-selector ".login-btn" \
+      --wait-selector ".dashboard" --test-endpoints /api/profile
+
+# Curl: Requires manual auth token management
+curl -H "Authorization: Bearer $TOKEN" https://app.com/api/profile
+```
+
+#### **Concurrent API Testing**
+```bash
+# Plurl: Tests multiple endpoints simultaneously
+plurl --url https://api.com --test-endpoints /users,/posts,/comments,/health
+
+# Curl: Sequential testing only
+for endpoint in users posts; do curl https://api.com/$endpoint; done
+```
+
+### ⚡ **Curl Advantages**
+
+#### **Speed & Efficiency**
+```bash
+# Curl: Instant responses (~50ms)
+curl https://api.github.com/users/octocat
+
+# Plurl: Browser overhead (~2-3s startup)
+plurl --url https://api.github.com --test-endpoints /users/octocat
+```
+
+#### **Simplicity & Universal Availability**
+```bash
+# Curl: Pre-installed on most systems
+curl -X POST https://api.com/data -d '{"name":"test"}'
+
+# Plurl: Requires installation
+pip install plurl && playwright install
+```
+
+#### **Fine-grained HTTP Control**
+```bash
+# Curl: Precise control over requests
+curl -H "Content-Type: application/json" \
+     -H "User-Agent: MyBot/1.0" \
+     -X PUT https://api.com/resource/123 \
+     -d '{"field":"value"}'
+```
+
+### 🎯 **Decision Matrix**
+
+| Use Case | Plurl | Curl | Reason |
+|----------|--------|------|---------|
+| REST API testing | ❌ | ✅ | Curl is faster and simpler |
+| GraphQL API testing | ❌ | ✅ | Direct HTTP POST with curl |
+| Single Page App (SPA) testing | ✅ | ❌ | Needs browser JS execution |
+| File downloads/uploads | ❌ | ✅ | Curl excels at file operations |
+| Visual regression testing | ✅ | ❌ | Screenshots only with Plurl |
+| Load/performance testing | ❌ | ✅ | Curl has less overhead |
+| Web form authentication | ✅ | ❌ | Complex UI interactions |
+| CI/CD health checks | ❌ | ✅ | Lightweight and fast |
+| Interactive debugging | ✅ | ❌ | Visual inspection needed |
+| Mobile responsiveness | ✅ | ❌ | Browser viewport simulation |
+
+### 🔄 **Hybrid Workflows**
+
+Often the best approach combines both tools:
+
+```bash
+# 1. Use Plurl for complex web testing and auth
+plurl --url https://app.com --click-selector ".login" \
+      --test-endpoints /api/dashboard --log-file session.json
+
+# 2. Extract auth details from Plurl logs
+TOKEN=$(jq -r '.events[] | select(.type=="api_success") | .headers.authorization' session.json)
+
+# 3. Use Curl for fast, targeted API testing
+curl -H "Authorization: $TOKEN" https://api.com/detailed-endpoint
+curl -H "Authorization: $TOKEN" https://api.com/bulk-data | jq '.items | length'
+```
+
+### 📋 **Quick Decision Guide**
+
+**Choose Plurl when:**
+- Testing SPAs or JavaScript-heavy sites
+- Need visual verification (screenshots)
+- Complex authentication flows (web forms)
+- End-to-end user journey testing
+- Development and debugging
+- Testing responsive design
+
+**Choose Curl when:**
+- Simple REST API testing
+- File operations (upload/download)
+- Shell scripting and automation
+- CI/CD health checks
+- Performance/load testing
+- Fine-grained HTTP control needed
+
 ## Architecture
 
 Plurl consists of several modular components:

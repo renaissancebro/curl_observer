@@ -65,6 +65,11 @@ Examples:
     # Handle headless/headed mode
     headless = args.headless and not args.headed
     
+    # Validate keep-open requires headed mode
+    if args.keep_open and headless:
+        print("Error: --keep-open requires --headed mode", file=sys.stderr)
+        sys.exit(1)
+    
     # Setup logging
     log_file = args.log_file or get_default_log_file()
     logger = StructuredLogger(log_file=log_file, verbose=args.verbose)

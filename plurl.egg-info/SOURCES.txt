@@ -1,5 +1,11 @@
 README.md
+api_tester.py
+browser_debugger.py
+cli.py
+logger.py
+plurl.py
 setup.py
+utils.py
 plurl.egg-info/PKG-INFO
 plurl.egg-info/SOURCES.txt
 plurl.egg-info/dependency_links.txt

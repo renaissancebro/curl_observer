@@ -10,9 +10,10 @@ from utils import sanitize_selector, get_browser_executable_path
 
 
 class BrowserDebugger:
-    def __init__(self, logger: StructuredLogger, headless: bool = True):
+    def __init__(self, logger: StructuredLogger, headless: bool = True, keep_open: bool = False):
         self.logger = logger
         self.headless = headless
+        self.keep_open = keep_open
         self.browser: Optional[Browser] = None
         self.page: Optional[Page] = None
         self.playwright = None

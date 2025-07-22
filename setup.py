@@ -17,7 +17,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/renaissancebro/curl_observer",
-    packages=find_packages(),
+    py_modules=['cli', 'browser_debugger', 'api_tester', 'logger', 'utils', 'plurl'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

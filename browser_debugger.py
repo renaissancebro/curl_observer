@@ -236,6 +236,22 @@ class BrowserDebugger:
     async def close(self) -> None:
         """Close browser and cleanup."""
         try:
+            if self.keep_open and not self.headless:
+                self.logger.log_browser_event("keep_open", {
+                    "message": "Browser kept open as requested (--keep-open)"
+                })
+                print("\n🌐 Browser kept open for manual interaction. Close the browser window to exit.")
+                # Keep browser alive by waiting for it to be closed manually
+                if self.browser:
+                    try:
+                        # Wait for all browser contexts to be closed
+                        while len(self.browser.contexts) > 0:
+                            await asyncio.sleep(1)
+                    except Exception:
+                        # Browser was closed manually
+                        pass
+                return
+            
             if self.browser:
                 await self.browser.close()
                 self.logger.log_browser_event("close", {

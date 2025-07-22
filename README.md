@@ -1,158 +1,290 @@
-# Play Curl
+# Plurl
 
-A powerful Playwright + curl-style HTTP testing tool that combines browser automation with API testing capabilities. This tool allows you to navigate web pages, interact with elements, and test multiple API endpoints concurrently or with retry logic.
+A powerful Playwright + curl-style HTTP testing tool that combines browser automation with API testing capabilities. Navigate web pages, interact with elements, and test multiple API endpoints concurrently—all from a single command.
+
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **Browser Automation**: Navigate to web pages with Playwright
-- **Interactive Elements**: Click elements and wait for selectors  
-- **API Testing**: Test multiple endpoints with concurrent execution
-- **Retry Logic**: Built-in retry mechanism for failed API requests
-- **Screenshot Capture**: Take screenshots of web pages
-- **Screen Recording**: Record browser sessions (experimental)
-- **Structured Logging**: Comprehensive JSON logging of all operations
-- **Flexible HTTP Methods**: Support for GET, POST, PUT, DELETE, etc.
-- **Response Analysis**: Preview response content and headers
-- **Performance Metrics**: Track response times and page load metrics
+- 🌐 **Browser Automation**: Navigate web pages with Playwright
+- 🖱️ **Interactive Elements**: Click elements and wait for selectors  
+- 🔗 **API Testing**: Test multiple endpoints with concurrent execution
+- 🔄 **Retry Logic**: Built-in retry mechanism for failed API requests
+- 📸 **Screenshot Capture**: Take screenshots of web pages
+- 🎬 **Screen Recording**: Record browser sessions (experimental)
+- 📊 **Structured Logging**: Comprehensive JSON logging of all operations
+- 🚀 **Flexible HTTP Methods**: Support for GET, POST, PUT, DELETE, etc.
+- 🔍 **Response Analysis**: Preview response content and headers
+- ⚡ **Performance Metrics**: Track response times and page load metrics
+- 🎯 **Keep Open Mode**: Keep browser open for manual interaction
 
 ## Installation
 
-1. Install dependencies:
+### From Source
+
+1. Clone the repository:
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/renaissancebro/curl_observer.git
+cd curl_observer
 ```
 
-2. Install Playwright browsers:
+2. Install the package:
+```bash
+pip install -e .
+```
+
+3. Install Playwright browsers:
 ```bash
 playwright install
 ```
 
-## Usage
+### From PyPI (when published)
 
-### Basic Usage
-
-Navigate to a URL and test API endpoints:
 ```bash
-python cli.py --url https://example.com --test-endpoints /api/users,/api/posts
+pip install plurl
+playwright install
 ```
 
-### Advanced Examples
+## Quick Start
 
-Test with specific HTTP method and retries:
+After installation, you can use `plurl` from anywhere:
+
 ```bash
-python cli.py --url https://api.github.com --test-endpoints /users/octocat --method GET --retry 3 --verbose
+# Test a website
+plurl --url https://example.com
+
+# Test API endpoints
+plurl --url https://api.github.com --test-endpoints /users/octocat
+
+# Interactive browser session
+plurl --url https://example.com --headed --keep-open
 ```
 
-Take a screenshot:
+## Usage Examples
+
+### Basic Web Testing
+
+Navigate to a URL and capture metrics:
 ```bash
-python cli.py --url https://example.com --screenshot screenshot.png
+plurl --url https://example.com
 ```
 
-Click an element and wait for selector:
+### API Endpoint Testing
+
+Test multiple endpoints concurrently:
 ```bash
-python cli.py --url https://example.com --click-selector "button.login" --wait-selector ".dashboard"
+plurl --url https://api.github.com --test-endpoints /users/octocat,/repos/microsoft/playwright
 ```
 
-Run in headed mode with screen recording:
+### Interactive Browser Testing
+
+Click elements and wait for results:
 ```bash
-python cli.py --url https://example.com --headed --record
+plurl --url https://example.com --headed --click-selector "button.login" --wait-selector ".dashboard"
 ```
 
-Keep browser open for manual interaction:
+### Screenshot Capture
+
+Take a screenshot of the page:
 ```bash
-python cli.py --url https://example.com --headed --keep-open
+plurl --url https://example.com --screenshot screenshot.png
 ```
 
-## Command Line Options
+### API Testing with Retries
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--url` | URL to launch in Playwright (required) | - |
-| `--test-endpoints` | Comma-separated list of API endpoints | - |
-| `--click-selector` | CSS selector to click after page load | - |
-| `--wait-selector` | CSS selector to wait for before continuing | - |
-| `--method` | HTTP method for API testing | GET |
-| `--timeout` | Request timeout in seconds | 30 |
-| `--retry` | Number of retry attempts for API requests | 0 |
-| `--headless` | Run browser in headless mode | true |
-| `--headed` | Run browser in headed mode | false |
-| `--screenshot` | Take screenshot and save to specified path | - |
-| `--record` | Record screen session (experimental) | false |
-| `--keep-open` | Keep browser open after completion (requires --headed) | false |
-| `--verbose` | Enable verbose output | false |
-| `--log-file` | Path to write structured log file | auto-generated |
+Test endpoints with retry logic and custom HTTP method:
+```bash
+plurl --url https://api.example.com --test-endpoints /api/status --method GET --retry 3 --timeout 10
+```
 
-## Output
+### Development and Debugging
 
-The tool provides:
+Keep browser open for manual inspection:
+```bash
+plurl --url https://example.com --headed --keep-open --verbose
+```
 
-1. **Console Summary**: Real-time status updates and final summary
-2. **Structured Logs**: Detailed JSON logs of all operations
-3. **API Results**: Status codes, response times, and content previews
-4. **Performance Metrics**: Page load times and browser metrics
-5. **Screenshots/Videos**: Visual captures when requested
+### Screen Recording (Experimental)
 
-### Sample Output
+Record browser session:
+```bash
+plurl --url https://example.com --headed --record
+```
+
+## Command Reference
 
 ```
-=== Play Curl Session Summary ===
+plurl [OPTIONS]
+
+OPTIONS:
+  --url URL                    URL to launch in Playwright (required)
+  --test-endpoints ENDPOINTS   Comma-separated list of API endpoints to test
+  --click-selector SELECTOR    CSS selector to click after page load
+  --wait-selector SELECTOR     CSS selector to wait for before continuing
+  --method METHOD              HTTP method for API testing (default: GET)
+  --timeout SECONDS            Request timeout in seconds (default: 30)
+  --retry COUNT                Number of retry attempts for API requests (default: 0)
+  --headless                   Run browser in headless mode (default)
+  --headed                     Run browser in headed mode (visible)
+  --keep-open                  Keep browser open after completion (requires --headed)
+  --screenshot PATH            Take screenshot and save to specified path
+  --record                     Record screen session (experimental)
+  --verbose, -v                Enable verbose output
+  --log-file PATH              Path to write structured log file (auto-generated if not specified)
+  --help, -h                   Show help message and exit
+```
+
+## Output Format
+
+Plurl provides comprehensive output including:
+
+### Console Output
+```
+=== Plurl Session Summary ===
 URL: https://api.github.com
 Total time: 2.34s
 Page title: GitHub API
 API endpoints tested: 2
 API success rate: 2/2 (100.0%)
-Log file: logs/play_curl_20240122_143052.json
+Log file: logs/plurl_20240122_143052.json
 === End Summary ===
+```
+
+### Structured JSON Logs
+
+All operations are logged in structured JSON format with events such as:
+- `session_start`: Session initialization
+- `phase`: Different execution phases
+- `browser_*`: Browser-related events  
+- `api_*`: API testing events
+- `success`/`warning`/`error`: Status messages
+
+### API Response Details
+
+For each API endpoint tested:
+- HTTP status code and response time
+- Response headers and content preview
+- Error details for failed requests
+- Retry attempt information
+
+## Advanced Usage
+
+### Environment Variables
+
+You can set default values using environment variables:
+
+```bash
+export PLURL_TIMEOUT=60
+export PLURL_LOG_DIR=/var/log/plurl
+export PLURL_HEADLESS=false
+```
+
+### Configuration File
+
+Create a `.plurlrc` file in your project root:
+
+```json
+{
+  "timeout": 30,
+  "headless": true,
+  "log_dir": "./logs",
+  "default_endpoints": ["/health", "/status"]
+}
+```
+
+### CI/CD Integration
+
+Perfect for automated testing in CI pipelines:
+
+```yaml
+# GitHub Actions example
+- name: Test API endpoints
+  run: |
+    plurl --url ${{ env.API_URL }} \
+          --test-endpoints /health,/api/v1/status \
+          --timeout 10 \
+          --retry 2 \
+          --headless
 ```
 
 ## Architecture
 
-The tool consists of several components:
+Plurl consists of several modular components:
 
-- **cli.py**: Main command-line interface and orchestration
-- **browser_debugger.py**: Playwright browser automation wrapper
-- **api_tester.py**: HTTP client for API endpoint testing
-- **logger.py**: Structured logging with JSON output
-- **utils.py**: Utility functions for validation and formatting
-
-## Log Structure
-
-Structured logs include events such as:
-
-- `session_start`: Session initialization
-- `phase`: Different execution phases
-- `browser_*`: Browser-related events
-- `api_*`: API testing events
-- `success`/`warning`/`error`: Status messages
-
-## Requirements
-
-- Python 3.7+
-- Playwright >= 1.40.0
-- httpx >= 0.25.0
-- asyncio-compat >= 0.7.0
+- **`cli.py`**: Command-line interface and orchestration
+- **`browser_debugger.py`**: Playwright browser automation wrapper
+- **`api_tester.py`**: Async HTTP client for API endpoint testing
+- **`logger.py`**: Structured logging with JSON output
+- **`utils.py`**: Utility functions for validation and formatting
 
 ## Error Handling
 
-The tool includes comprehensive error handling for:
+Comprehensive error handling for:
 
-- Network timeouts and connection errors
-- Invalid selectors or missing elements
-- HTTP errors and API failures
-- Browser launch failures
-- File I/O operations
+- ❌ Network timeouts and connection errors
+- ❌ Invalid selectors or missing elements  
+- ❌ HTTP errors and API failures
+- ❌ Browser launch failures
+- ❌ File I/O operations
 
 All errors are logged with context and appropriate exit codes are returned.
 
+## Requirements
+
+- **Python**: 3.7 or higher
+- **Playwright**: >= 1.40.0 (browser automation)
+- **httpx**: >= 0.25.0 (async HTTP requests)
+- **asyncio-compat**: >= 0.7.0 (async compatibility)
+
+## Manual Page
+
+Install the manual page:
+
+```bash
+sudo cp docs/plurl.1 /usr/local/share/man/man1/
+man plurl
+```
+
 ## Development
 
-The tool is built with async/await patterns and uses:
+### Local Development
 
-- **Playwright** for browser automation
-- **httpx** for async HTTP requests
-- **asyncio** for concurrent operations
-- **argparse** for CLI argument parsing
+1. Clone and install in development mode:
+```bash
+git clone https://github.com/renaissancebro/curl_observer.git
+cd curl_observer
+pip install -e .
+```
+
+2. Run tests:
+```bash
+python -m pytest tests/
+```
+
+3. Format code:
+```bash
+black *.py
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/renaissancebro/curl_observer/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/renaissancebro/curl_observer/discussions)
+- 📖 **Documentation**: [GitHub README](https://github.com/renaissancebro/curl_observer#readme)
+
+---
+
+**Plurl** - *Playwright meets curl for modern web testing*

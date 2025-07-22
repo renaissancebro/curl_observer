@@ -58,6 +58,11 @@ Run in headed mode with screen recording:
 python cli.py --url https://example.com --headed --record
 ```
 
+Keep browser open for manual interaction:
+```bash
+python cli.py --url https://example.com --headed --keep-open
+```
+
 ## Command Line Options
 
 | Option | Description | Default |

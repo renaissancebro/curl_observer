@@ -27,7 +27,6 @@ Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 Requires-Dist: playwright>=1.40.0
 Requires-Dist: httpx>=0.25.0
-Requires-Dist: asyncio-compat>=0.7.0
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier

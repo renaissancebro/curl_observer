@@ -235,7 +235,6 @@ All errors are logged with context and appropriate exit codes are returned.
 - **Python**: 3.7 or higher
 - **Playwright**: >= 1.40.0 (browser automation)
 - **httpx**: >= 0.25.0 (async HTTP requests)
-- **asyncio-compat**: >= 0.7.0 (async compatibility)
 
 ## Manual Page
 

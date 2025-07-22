@@ -78,6 +78,7 @@ python cli.py --url https://example.com --headed --keep-open
 | `--headed` | Run browser in headed mode | false |
 | `--screenshot` | Take screenshot and save to specified path | - |
 | `--record` | Record screen session (experimental) | false |
+| `--keep-open` | Keep browser open after completion (requires --headed) | false |
 | `--verbose` | Enable verbose output | false |
 | `--log-file` | Path to write structured log file | auto-generated |
 

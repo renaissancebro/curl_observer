@@ -91,7 +91,7 @@ Examples:
     
     try:
         # Initialize browser
-        browser_debugger = BrowserDebugger(logger, headless=headless)
+        browser_debugger = BrowserDebugger(logger, headless=headless, keep_open=args.keep_open)
         await browser_debugger.launch()
         
         # Navigate to URL

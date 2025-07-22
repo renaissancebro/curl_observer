@@ -1,0 +1,8 @@
+README.md
+setup.py
+plurl.egg-info/PKG-INFO
+plurl.egg-info/SOURCES.txt
+plurl.egg-info/dependency_links.txt
+plurl.egg-info/entry_points.txt
+plurl.egg-info/requires.txt
+plurl.egg-info/top_level.txt

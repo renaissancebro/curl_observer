@@ -50,6 +50,8 @@ Examples:
                        help="HTTP method for API testing (default: GET)")
     parser.add_argument("--retry", type=int, default=0,
                        help="Number of retry attempts for API requests (default: 0)")
+    parser.add_argument("--keep-open", action="store_true", 
+                       help="Keep browser open after completion (requires --headed)")
     
     args = parser.parse_args()
     
